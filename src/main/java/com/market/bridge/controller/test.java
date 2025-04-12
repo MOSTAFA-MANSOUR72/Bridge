@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class test {
     @GetMapping
     public String test(){
-        var s = Seller.builder().roles("ldsaf").build();
+        var s = Seller.builder().roles("SELLER").build();
         System.out.println(s.getRoles());
         return "test";
     }

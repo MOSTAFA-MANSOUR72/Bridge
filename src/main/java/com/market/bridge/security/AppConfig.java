@@ -1,7 +1,10 @@
 package com.market.bridge.security;
 
+import com.itextpdf.text.pdf.BidiLine;
 import com.market.bridge.entity.Address;
+import com.market.bridge.entity.users.Admin;
 import com.market.bridge.entity.users.Seller;
+import com.market.bridge.repository.AdminRepo;
 import com.market.bridge.repository.BuyerRepo;
 import com.market.bridge.repository.SellerRepo;
 import com.market.bridge.service.UserDetailsService.ComposedUserDetailsService;
@@ -19,7 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @AllArgsConstructor
 public class AppConfig {
     private final ComposedUserDetailsService composedUserDetailsService;
-    private final SellerRepo sellerRepo;
+    private final AdminRepo adminRepo;
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider(){
@@ -64,6 +67,15 @@ public class AppConfig {
 //                    .address(address)
 //                    .build();
 //            sellerRepo.save(seller);
+            Admin admin = Admin.builder()
+                    .roles("ADMIN")
+                    .email("Admin@gmail.com")
+                    .username("admin")
+                    .password(passwordEncoder().encode("admin"))
+                    .phoneNumber("1234567890")
+                    .build();
+            // Save the admin to the database
+            adminRepo.save(admin);
         };
 
     }

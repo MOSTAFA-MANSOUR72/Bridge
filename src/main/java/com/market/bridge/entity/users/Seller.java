@@ -15,8 +15,6 @@ import java.time.LocalDate;
 @Table(name = "seller")
 @Builder
 @Data
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Seller {
@@ -40,6 +38,10 @@ public class Seller {
     @Column(name = "phone_number", unique = true)
     @NotNull
     private String phoneNumber;
+
+    @Column(name = "Company_name")
+    private String companyName;
+
 
     @Column(name = "roles")
     @NotNull
