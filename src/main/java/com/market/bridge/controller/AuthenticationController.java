@@ -3,6 +3,7 @@ package com.market.bridge.controller;
 import com.market.bridge.dto.AuthenticationRequest;
 import com.market.bridge.dto.RegisterRequest;
 import com.market.bridge.service.Authentication.AuthenticationService;
+import com.market.bridge.service.Authentication.AuthenticationServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
