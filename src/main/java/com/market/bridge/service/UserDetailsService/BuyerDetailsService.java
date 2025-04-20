@@ -18,4 +18,10 @@ public class BuyerDetailsService implements UserDetailsService {
                 .map(UserEntity::new)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
+
+    public UserDetails loadUserByEmail(String email) throws UsernameNotFoundException {
+        return buyerRepo.findBuyerByEmail(email)
+                .map(UserEntity::new)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
 }

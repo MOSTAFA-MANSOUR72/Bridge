@@ -23,6 +23,26 @@ public class JwtService {
     @Value("${security.jwt.expiration}")
     private long jwtExpiration;
 
+    @Value("${security.mail.expiration}")
+    private long mailExpiration; // 1 minute
+    public String generateMailToken(UserDetails userDetails) {
+        return generateToken(new HashMap<>(), userDetails);
+    }
+    public String generateMailToken(Map<String, Object> extraClaims, UserDetails userDetails) {
+        return buildMailToken(extraClaims, userDetails);
+    }
+    private String buildMailToken(Map<String, Object> extraClaims,
+                                  UserDetails userDetails) {
+        return Jwts
+                .builder()
+                .setClaims(extraClaims)
+                .setSubject(userDetails.getUsername()) // User's meta data used in encoding the token ( email / username )
+                .setIssuedAt(new Date(System.currentTimeMillis())) // when the token was created
+                .setExpiration(new Date(System.currentTimeMillis() + mailExpiration)) // when the token will expire
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256) // algorithm used to sign the token
+                .compact();
+    }
+
     // Generating token
     public String generateToken(UserDetails userDetails) {
         return generateToken(new HashMap<>(), userDetails);
@@ -56,7 +76,7 @@ public class JwtService {
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
-    private boolean isTokenExpired(String token) {
+    public boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 

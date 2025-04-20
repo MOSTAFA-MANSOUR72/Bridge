@@ -30,4 +30,34 @@ public class ComposedUserDetailsService implements UserDetailsService {
         }
         throw new UsernameNotFoundException("User Not Found");
     }
+
+    public UserDetails loadUserByEmail(String email) throws UsernameNotFoundException {
+
+        try {
+            UserDetails admin= adminDetailsService.loadUserByEmail(email);
+            return admin;
+        }
+        catch (UsernameNotFoundException ignored) {
+            // Ignore and try the next service
+        }
+
+        // Check if the user is a seller or buyer
+        try {
+            UserDetails seller= sellerDetailsService.loadUserByEmail(email);
+            return seller;
+        }
+        catch (UsernameNotFoundException ignored) {
+            // Ignore and try the next service
+        }
+
+        // Check if the user is a seller or buyer
+        try {
+            UserDetails buyer= buyerDetailsService.loadUserByEmail(email);
+            return buyer;
+        }
+        catch (UsernameNotFoundException ignored) {
+            throw new UsernameNotFoundException("User Not Found");
+        }
+
+    }
 }

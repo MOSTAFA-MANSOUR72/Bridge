@@ -20,7 +20,7 @@ public class MailServiceImpl implements MailService{
         mailMessage.setFrom(mailSender);
         mailMessage.setTo(recipient);
         mailMessage.setSubject(subject);
-        mailMessage.setSubject(messageBody);
+        mailMessage.setText(messageBody);
 
         try {
             javaMailSender.send(mailMessage);

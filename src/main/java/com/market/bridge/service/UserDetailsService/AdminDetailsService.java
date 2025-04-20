@@ -18,4 +18,10 @@ public class AdminDetailsService implements UserDetailsService {
                  .map(UserEntity::new)
                  .orElseThrow(() -> new UsernameNotFoundException("User not found"));
      }
+
+    public UserDetails loadUserByEmail(String email) throws UsernameNotFoundException {
+        return adminRepo.findAdminByEmail(email)
+                .map(UserEntity::new)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
 }
