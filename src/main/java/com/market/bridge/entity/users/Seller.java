@@ -1,6 +1,7 @@
 package com.market.bridge.entity.users;
 
 import com.market.bridge.entity.Address;
+import com.market.bridge.entity.Product;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -10,6 +11,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "seller")
@@ -52,9 +55,18 @@ public class Seller {
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
 
+    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Product> products;
+
     @CreationTimestamp
     private LocalDate createdAt;
     @UpdateTimestamp
     private LocalDate updatedAt;
 
+    public void addProduct(Product product) {
+        if(products == null){
+            products = new ArrayList<>();
+        }
+        products.add(product);
+    }
 }

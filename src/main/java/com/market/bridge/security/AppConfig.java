@@ -2,10 +2,12 @@ package com.market.bridge.security;
 
 import com.itextpdf.text.pdf.BidiLine;
 import com.market.bridge.entity.Address;
+import com.market.bridge.entity.Category;
 import com.market.bridge.entity.users.Admin;
 import com.market.bridge.entity.users.Seller;
 import com.market.bridge.repository.AdminRepo;
 import com.market.bridge.repository.BuyerRepo;
+import com.market.bridge.repository.CategoryRepo;
 import com.market.bridge.repository.SellerRepo;
 import com.market.bridge.service.UserDetailsService.ComposedUserDetailsService;
 import lombok.AllArgsConstructor;
@@ -23,6 +25,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class AppConfig {
     private final ComposedUserDetailsService composedUserDetailsService;
     private final AdminRepo adminRepo;
+    private final CategoryRepo categoryRepo;
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider(){
@@ -76,6 +79,13 @@ public class AppConfig {
                     .build();
             // Save the admin to the database
             adminRepo.save(admin);
+            Category category = Category.builder()
+                    .name("Electronics")
+                    .parentCategoryId(null)
+                    .build();
+
+            // Save the category to the database
+            categoryRepo.save(category);
         };
 
     }

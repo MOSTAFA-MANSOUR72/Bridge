@@ -5,6 +5,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ public class JwtService {
     @Value("${security.mail.expiration}")
     private long mailExpiration; // 1 minute
     public String generateMailToken(UserDetails userDetails) {
-        return generateToken(new HashMap<>(), userDetails);
+        return generateMailToken(new HashMap<>(), userDetails);
     }
     public String generateMailToken(Map<String, Object> extraClaims, UserDetails userDetails) {
         return buildMailToken(extraClaims, userDetails);
@@ -101,10 +102,5 @@ public class JwtService {
                 .parseClaimsJws(token)
                 .getBody();
     }
-
-    public long getExpirationTime() {
-        return jwtExpiration;
-    }
-
 
 }

@@ -1,4 +1,4 @@
-package com.market.bridge.dto;
+package com.market.bridge.dto.authentication;
 
 import lombok.Data;
 

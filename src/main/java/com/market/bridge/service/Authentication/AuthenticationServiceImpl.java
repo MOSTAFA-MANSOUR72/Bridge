@@ -1,11 +1,11 @@
 package com.market.bridge.service.Authentication;
 
-import com.market.bridge.dto.RegisterRequest;
+import com.market.bridge.dto.authentication.AuthResponse;
+import com.market.bridge.dto.authentication.RegisterRequest;
 import com.market.bridge.entity.enums.SystemRoles;
 import com.market.bridge.entity.users.Buyer;
 import com.market.bridge.entity.users.Seller;
 import com.market.bridge.entity.users.UserEntity;
-import com.market.bridge.repository.AdminRepo;
 import com.market.bridge.repository.BuyerRepo;
 import com.market.bridge.repository.SellerRepo;
 import com.market.bridge.security.jwt.JwtService;
@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import com.market.bridge.dto.AuthenticationRequest;
+import com.market.bridge.dto.authentication.AuthenticationRequest;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -85,7 +85,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public String authenticate(AuthenticationRequest request){
+    public AuthResponse authenticate(AuthenticationRequest request){
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUsername(),
@@ -94,7 +94,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         );
 
         var userDetails = userDetailsService.loadUserByUsername(request.getUsername());
-        return jwtService.generateToken(userDetails);
+        return new AuthResponse(
+                jwtService.generateToken(userDetails),
+                userDetails
+        );
     }
 
 }

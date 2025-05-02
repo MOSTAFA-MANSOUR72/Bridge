@@ -1,7 +1,7 @@
 package com.market.bridge.controller;
 
 
-import com.market.bridge.dto.ChangeRequest;
+import com.market.bridge.dto.authentication.ChangeRequest;
 import com.market.bridge.service.PasswordChange.PasswordService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
