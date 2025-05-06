@@ -6,9 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -64,9 +63,12 @@ public class Product {
     private List<String> images;
 
 
-    @CreatedDate
+    @Column(name = "created_at")
+    @CreationTimestamp
     private LocalDate createdAt;
-    @LastModifiedDate
-    private LocalDate updatedAt;
+
+    @Column(name = "modified_at")
+    @UpdateTimestamp
+    private LocalDate modifiedAt;
 
 }

@@ -7,8 +7,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -58,10 +56,13 @@ public class Seller {
     @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Product> products;
 
+    @Column(name = "created_at")
     @CreationTimestamp
     private LocalDate createdAt;
+
+    @Column(name = "modified_at")
     @UpdateTimestamp
-    private LocalDate updatedAt;
+    private LocalDate modifiedAt;
 
     public void addProduct(Product product) {
         if(products == null){
