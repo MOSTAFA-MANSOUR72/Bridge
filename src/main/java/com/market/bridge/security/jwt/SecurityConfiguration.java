@@ -32,6 +32,8 @@ public class SecurityConfiguration {
                                 "/api/password/**",
                                 "/api/auth/**",
                                 "/swagger-ui/**",
+                                "/api/products/**",    // ← أضف هذا السطر
+                                "/api/categories/**",  // ← أضف هذا السطر
                                 "/v3/api-docs*/**"
                         ).permitAll()
                         .anyRequest().authenticated()
