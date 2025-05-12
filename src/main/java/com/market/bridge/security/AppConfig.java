@@ -69,23 +69,23 @@ public class AppConfig {
 //                    .roles("SELLER")
 //                    .address(address)
 //                    .build();
-//            sellerRepo.save(seller);
-            Admin admin = Admin.builder()
-                    .roles("ADMIN")
-                    .email("Admin@gmail.com")
-                    .username("admin")
-                    .password(passwordEncoder().encode("admin"))
-                    .phoneNumber("1234567890")
-                    .build();
-            // Save the admin to the database
-            adminRepo.save(admin);
-            Category category = Category.builder()
-                    .name("Electronics")
-                    .parentCategoryId(null)
-                    .build();
+// //            sellerRepo.save(seller);
+//             Admin admin = Admin.builder()
+//                     .roles("ADMIN")
+//                     .email("Admin@gmail.com")
+//                     .username("admin")
+//                     .password(passwordEncoder().encode("admin"))
+//                     .phoneNumber("1234567890")
+//                     .build();
+//             // Save the admin to the database
+//             adminRepo.save(admin);
+//             Category category = Category.builder()
+//                     .name("Electronics")
+//                     .parentCategoryId(null)
+//                     .build();
 
-            // Save the category to the database
-            categoryRepo.save(category);
+//             // Save the category to the database
+//             categoryRepo.save(category);
         };
 
     }
