@@ -1,5 +1,6 @@
 package com.market.bridge.entity;
 
+import com.market.bridge.entity.order.OrderItem;
 import com.market.bridge.entity.users.Seller;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -56,6 +57,9 @@ public class Product {
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
     private List<Category> categories;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<OrderItem> orderItems;
 
     @ElementCollection
     @CollectionTable(name = "product_images", joinColumns = @JoinColumn(name = "product_id"))

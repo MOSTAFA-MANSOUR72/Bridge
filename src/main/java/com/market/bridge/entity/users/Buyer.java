@@ -1,6 +1,7 @@
 package com.market.bridge.entity.users;
 
 import com.market.bridge.entity.Address;
+import com.market.bridge.entity.order.SingleOrder;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "buyer")
@@ -47,6 +49,9 @@ public class Buyer {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
+
+    @OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<SingleOrder> orders;
 
     @Column(name = "created_at")
     @CreationTimestamp
