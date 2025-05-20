@@ -1,11 +1,13 @@
 package com.market.bridge.security.jwt;
 
+import com.market.bridge.service.UserDetailsService.ComposedUserDetailsService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -17,7 +19,10 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Service
+@RequiredArgsConstructor
 public class JwtService {
+    private final ComposedUserDetailsService userDetailsService;
+
     @Value("${security.jwt.secret-key}")
     private String secretKey;
 
@@ -103,4 +108,8 @@ public class JwtService {
                 .getBody();
     }
 
+    public void setUp(String username){
+        util.username = username;
+        util.userId = userDetailsService.loadUserIdByUsername(username);
+    }
 }

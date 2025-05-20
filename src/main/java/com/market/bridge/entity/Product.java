@@ -39,8 +39,8 @@ public class Product {
     @Column(name = "quantity")
     private Long quantity;
 
-    @Column(name = "rating")
-    private Integer rating;
+    @Column(name = "ratting")
+    private Integer ratting;
 
     @Column(name = "brand_name")
     private String brandName;

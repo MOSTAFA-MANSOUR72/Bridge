@@ -1,5 +1,6 @@
 package com.market.bridge.service.UserDetailsService;
 
+import com.market.bridge.entity.users.Buyer;
 import com.market.bridge.entity.users.UserEntity;
 import com.market.bridge.repository.BuyerRepo;
 import lombok.AllArgsConstructor;
@@ -17,6 +18,12 @@ public class BuyerDetailsService implements UserDetailsService {
         return buyerRepo.findByUsername(username)
                 .map(UserEntity::new)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
+
+    public Long loadUserIdByUsername(String username) throws UsernameNotFoundException {
+        Buyer buyer = buyerRepo.findByUsername(username)
+                .orElseThrow(()-> new UsernameNotFoundException("User not found"));
+        return buyer.getId();
     }
 
     public UserDetails loadUserByEmail(String email) throws UsernameNotFoundException {

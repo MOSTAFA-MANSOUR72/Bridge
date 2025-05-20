@@ -1,6 +1,7 @@
 package com.market.bridge.entity.users;
 
 import com.market.bridge.entity.Address;
+import com.market.bridge.entity.cart.Cart;
 import com.market.bridge.entity.order.SingleOrder;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -52,6 +53,9 @@ public class Buyer {
 
     @OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<SingleOrder> orders;
+
+    @OneToOne(mappedBy = "buyer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Cart cart;
 
     @Column(name = "created_at")
     @CreationTimestamp

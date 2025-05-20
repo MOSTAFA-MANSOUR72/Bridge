@@ -36,6 +36,12 @@ public class SingleOrder {
     @JoinColumn(name = "user_id")
     private Buyer buyer;
 
+    @Column(name = "payment_method")
+    private String paymentMethod;
+
+    @Column(name = "estimated_delivery_date")
+    private LocalDate estimatedDeliveryDate;
+
     @Column(name = "created_at")
     @CreationTimestamp
     private LocalDate createdAt;

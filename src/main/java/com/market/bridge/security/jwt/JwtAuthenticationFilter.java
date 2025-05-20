@@ -40,7 +40,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if(userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null){
             UserDetails userDetails = composedUserDetailsService.loadUserByUsername(userEmail);
-            util.username = userEmail;
+
+            // store the user details in the system utils.
+            jwtService.setUp(userEmail);
 
             // Setting user in the authentication context
             // So it can be accessed in any application layer.

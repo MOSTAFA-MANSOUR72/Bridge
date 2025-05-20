@@ -30,7 +30,7 @@ public class ProductMapper {
                 .categories(categories)
                 .description(productRequest.getDescription())
                 .minOrder(productRequest.getMinOrder())
-                .rating(0)
+                .ratting(0)
                 .quantity(productRequest.getQuantity())
                 .build();
     }
@@ -58,7 +58,7 @@ public class ProductMapper {
                 .price(product.getPrice())
                 .minOrder(product.getMinOrder())
                 .quantity(product.getQuantity())
-                .rating(product.getRating())
+                .rating(product.getRatting())
                 .images(product.getImages())
                 .categoriesIdes(product.getCategories().stream().map(Category::getId).collect(Collectors.toList()))
                 .brandName(product.getBrandName())
