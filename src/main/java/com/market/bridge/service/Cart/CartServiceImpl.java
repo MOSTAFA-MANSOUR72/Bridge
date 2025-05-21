@@ -1,12 +1,15 @@
 package com.market.bridge.service.Cart;
 
 import com.market.bridge.dto.cartItem.CartItemAddRequest;
+import com.market.bridge.dto.cartItem.CartItemUpdateRequest;
+import com.market.bridge.entity.Product;
 import com.market.bridge.entity.cart.Cart;
 import com.market.bridge.entity.cart.CartItem;
 import com.market.bridge.mapper.CartItemMapper;
 import com.market.bridge.repository.BuyerRepo;
 import com.market.bridge.repository.CartItemRepo;
 import com.market.bridge.repository.CartRepo;
+import com.market.bridge.repository.ProductRepo;
 import com.market.bridge.security.jwt.util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,6 +26,7 @@ public class CartServiceImpl implements CartService{
     private final BuyerRepo buyerRepo;
     private final CartItemMapper cartItemMapper;
     private final CartItemRepo cartItemRepo;
+    private final ProductRepo productRepo;
 
 
     @Override
@@ -40,6 +44,27 @@ public class CartServiceImpl implements CartService{
     @Override
     public List<CartItem> getAllCartItems() {
         return getOrCreateCart().getCartItems();
+    }
+
+    @Override
+    public CartItem updateCartItem(CartItemUpdateRequest request) {
+        CartItem cartItem = cartItemRepo.findById(request.getCartItemId())
+                .orElseThrow(() -> new IllegalArgumentException("Cart item not found"));
+
+        cartItemMapper.toCartItem(request, cartItem);
+
+        return cartItemRepo.save(cartItem);
+    }
+
+    @Override
+    public void deleteCartItem(Long cartItemId) {
+        CartItem cartItem = cartItemRepo.findById(cartItemId)
+                .orElseThrow(() -> new IllegalArgumentException("Cart item not found"));
+        Product product = cartItem.getProduct();
+        product.setQuantity(product.getQuantity() + cartItem.getQuantity());
+
+        cartItemRepo.delete(cartItem);
+        productRepo.save(product);
     }
 
     @Override

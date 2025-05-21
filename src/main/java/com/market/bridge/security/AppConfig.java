@@ -100,12 +100,14 @@ public class AppConfig {
                     .quantity((10L))
                     .categories(List.of(category))
                     .seller(seller)
+                    .minOrder(2L)
                     .build();
             Product product2 = Product.builder()
                     .name("Smartphone")
                     .description("Latest model smartphone")
                     .price(800.00)
                     .quantity((20L))
+                    .minOrder(2L)
                     .categories(List.of(category))
                     .seller(seller)
                     .build();
@@ -113,6 +115,7 @@ public class AppConfig {
                     .name("Tablet")
                     .description("Portable tablet with great features")
                     .price(500.00)
+                    .minOrder(2L)
                     .quantity((15L))
                     .categories(List.of(category))
                     .seller(seller)
