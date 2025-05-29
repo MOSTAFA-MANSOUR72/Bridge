@@ -1,5 +1,6 @@
 package com.market.bridge.entity.order;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.market.bridge.entity.users.Buyer;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -34,6 +35,7 @@ public class SingleOrder {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private Buyer buyer;
 
     @Column(name = "payment_method")

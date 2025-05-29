@@ -52,9 +52,6 @@ public class AppConfig {
     public CommandLineRunner init(){
         return args -> {
             // Initialize the application with necessary data or configurations
-            // For example, you can create default users or roles here
-            // userService.createDefaultUsers();
-            // roleService.createDefaultRoles();
 
             Address address = new Address();
             address.setStreet("123 Test Street");
@@ -72,7 +69,6 @@ public class AppConfig {
                     .roles("SELLER")
                     .address(address)
                     .build();
- //            sellerRepo.save(seller);
              Admin admin = Admin.builder()
                      .roles("ADMIN")
                      .email("Admin@gmail.com")
@@ -80,7 +76,7 @@ public class AppConfig {
                      .password(passwordEncoder().encode("admin"))
                      .phoneNumber("1234567890")
                      .build();
-             // Save the admin to the database
+             // Save
              adminRepo.save(admin);
              sellerRepo.save(seller);
 
@@ -101,6 +97,7 @@ public class AppConfig {
                     .categories(List.of(category))
                     .seller(seller)
                     .minOrder(2L)
+                    .images(List.of("C:\\Users\\dell\\Documents\\Downloads\\WorkSpace\\bridge\\Bridge\\src\\main\\resources\\images\\laptop.jpeg"))
                     .build();
             Product product2 = Product.builder()
                     .name("Smartphone")
@@ -110,6 +107,7 @@ public class AppConfig {
                     .minOrder(2L)
                     .categories(List.of(category))
                     .seller(seller)
+                    .images(List.of("C:\\Users\\dell\\Documents\\Downloads\\WorkSpace\\bridge\\Bridge\\src\\main\\resources\\images\\smart.jpeg"))
                     .build();
             Product product3 = Product.builder()
                     .name("Tablet")
@@ -119,6 +117,7 @@ public class AppConfig {
                     .quantity((15L))
                     .categories(List.of(category))
                     .seller(seller)
+                    .images(List.of("C:\\Users\\dell\\Documents\\Downloads\\WorkSpace\\bridge\\Bridge\\src\\main\\resources\\images\\tap.jpeg"))
                     .build();
             productRepo.saveAll(List.of(product1, product2, product3));
         };

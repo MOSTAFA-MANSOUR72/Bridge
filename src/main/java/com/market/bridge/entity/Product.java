@@ -1,5 +1,6 @@
 package com.market.bridge.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.market.bridge.entity.order.OrderItem;
 import com.market.bridge.entity.users.Seller;
 import jakarta.persistence.*;
@@ -11,6 +12,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "product")
@@ -39,8 +41,8 @@ public class Product {
     @Column(name = "quantity")
     private Long quantity;
 
-    @Column(name = "ratting")
-    private Integer ratting;
+    @Column(name = "rating")
+    private Integer rating;
 
     @Column(name = "brand_name")
     private String brandName;
@@ -59,7 +61,12 @@ public class Product {
     private List<Category> categories;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<OrderItem> orderItems;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<ProductReview> productReviews;
 
     @ElementCollection
     @CollectionTable(name = "product_images", joinColumns = @JoinColumn(name = "product_id"))
@@ -74,5 +81,11 @@ public class Product {
     @Column(name = "modified_at")
     @UpdateTimestamp
     private LocalDate modifiedAt;
+
+    public void addProductReview(ProductReview productReview) {
+        productReviews.add(productReview);
+        rating = productReviews.stream().map(p -> p.getRating()).collect(Collectors.toList()).stream()
+                .mapToInt(Integer::intValue).sum() / productReviews.size();
+    }
 
 }

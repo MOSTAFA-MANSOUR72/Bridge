@@ -1,6 +1,8 @@
 package com.market.bridge.entity.users;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.market.bridge.entity.Address;
+import com.market.bridge.entity.ProductReview;
 import com.market.bridge.entity.cart.Cart;
 import com.market.bridge.entity.order.SingleOrder;
 import jakarta.persistence.*;
@@ -52,7 +54,12 @@ public class Buyer {
     private Address address;
 
     @OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<SingleOrder> orders;
+
+    @OneToMany(mappedBy = "buyer", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<ProductReview> productReviews;
 
     @OneToOne(mappedBy = "buyer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Cart cart;
