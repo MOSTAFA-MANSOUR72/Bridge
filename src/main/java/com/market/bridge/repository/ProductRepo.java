@@ -17,4 +17,7 @@ public interface ProductRepo extends JpaRepository<Product, Long> {
     Page<Product> findBySellerId(Long sellerId, Pageable pageable);
 
     Page<Product> findByBrandName(String brandName, Pageable pageable);
+
+    @Query("select b.wishlist from Buyer b where b.id = :userId")
+    Page<Product> findBuyerWishlistProducts(Long userId, Pageable pageable);
 }

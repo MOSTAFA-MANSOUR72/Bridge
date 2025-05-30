@@ -42,7 +42,7 @@ public class Product {
     private Long quantity;
 
     @Column(name = "rating")
-    private Integer rating;
+    private Float rating;
 
     @Column(name = "brand_name")
     private String brandName;
@@ -59,6 +59,7 @@ public class Product {
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
     private List<Category> categories;
+
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
@@ -82,10 +83,10 @@ public class Product {
     @UpdateTimestamp
     private LocalDate modifiedAt;
 
-    public void addProductReview(ProductReview productReview) {
-        productReviews.add(productReview);
-        rating = productReviews.stream().map(p -> p.getRating()).collect(Collectors.toList()).stream()
-                .mapToInt(Integer::intValue).sum() / productReviews.size();
-    }
+//    public void addProductReview(ProductReview productReview) {
+//        productReviews.add(productReview);
+//        rating = (float) (productReviews.stream().map(p -> p.getRating()).collect(Collectors.toList()).stream()
+//                        .mapToDouble(Float::floatValue).sum() / productReviews.size());
+//    }
 
 }

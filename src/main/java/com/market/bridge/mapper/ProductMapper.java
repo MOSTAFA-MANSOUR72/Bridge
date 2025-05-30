@@ -30,7 +30,7 @@ public class ProductMapper {
                 .categories(categories)
                 .description(productRequest.getDescription())
                 .minOrder(productRequest.getMinOrder())
-                .rating(0)
+                .rating(0f)
                 .quantity(productRequest.getQuantity())
                 .build();
     }

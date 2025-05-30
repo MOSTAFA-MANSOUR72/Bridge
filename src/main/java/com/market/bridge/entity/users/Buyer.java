@@ -2,6 +2,7 @@ package com.market.bridge.entity.users;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.market.bridge.entity.Address;
+import com.market.bridge.entity.Product;
 import com.market.bridge.entity.ProductReview;
 import com.market.bridge.entity.cart.Cart;
 import com.market.bridge.entity.order.SingleOrder;
@@ -14,7 +15,10 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "buyer")
@@ -64,6 +68,15 @@ public class Buyer {
     @OneToOne(mappedBy = "buyer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Cart cart;
 
+    // Uni directional relationship with Product
+    @ManyToMany
+    @JoinTable(
+            name = "wishlist",
+            joinColumns = @JoinColumn(name = "buyer_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
+    )
+    private Set<Product> wishlist;
+
     @Column(name = "created_at")
     @CreationTimestamp
     private LocalDate createdAt;
@@ -71,4 +84,11 @@ public class Buyer {
     @Column(name = "modified_at")
     @UpdateTimestamp
     private LocalDate modifiedAt;
+
+    public void addProductToWishlist(Product product) {
+        if(wishlist == null) {
+            wishlist = new HashSet<>();
+        }
+        wishlist.add(product);
+    }
 }

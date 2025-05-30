@@ -19,7 +19,7 @@ public class ProductResponse {
     private Double price;
     private Long minOrder;
     private Long quantity;
-    private Integer rating;
+    private Float rating;
     private List<String> images;
     private List<Long> categoriesIdes;
     private String brandName;

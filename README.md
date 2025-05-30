@@ -30,6 +30,12 @@ The **Bridge Application** is a Spring Boot-based e-commerce platform that facil
 - **Order Management**:
     - Manage orders with statuses (e.g., Pending, Shipped, Delivered).
 
+- **Wishlist**:
+    - Add products to a personal wishlist.
+    - Remove products from the wishlist.
+    - Clear the entire wishlist.
+    - Retrieve paginated wishlist products.
+
 - **Email Notifications**:
     - Email alerts for password reset.
 
@@ -130,6 +136,12 @@ The **Bridge Application** is a Spring Boot-based e-commerce platform that facil
 - `PUT /api/product-review` - Update an existing review (Buyer only, must be the review owner).
 - `DELETE /api/product-review/{id}` - Delete a review by its ID (Buyer only, must be the review owner).
 - `GET /api/product-review/{productId}` - Retrieve paginated reviews for a specific product.
+
+### Wishlist
+- `POST /api/wishlist/{productId}` - Add a product to the wishlist (Buyer only).
+- `DELETE /api/wishlist/{productId}` - Remove a product from the wishlist (Buyer only).
+- `DELETE /api/wishlist` - Clear the entire wishlist (Buyer only).
+- `GET /api/wishlist` - Retrieve paginated wishlist products (Buyer only).
 
 ### Password Management
 - `GET /api/password/send/{gmail}` - Send a password reset token.
