@@ -15,6 +15,10 @@ The **Bridge Application** is a Spring Boot-based e-commerce platform that facil
     - Add, update, delete, and retrieve products.
     - Filter products by category, seller, or brand.
 
+- **Product Review Management**:
+    - Add, update, and delete product's reviews.
+    - Retrieve paginated reviews for a product by id.
+
 - **Category Management**:
     - Add, update, delete, and retrieve categories.
     - Support for parent-child category relationships.
