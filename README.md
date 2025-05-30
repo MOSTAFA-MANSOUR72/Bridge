@@ -121,6 +121,12 @@ The **Bridge Application** is a Spring Boot-based e-commerce platform that facil
 - `GET /api/cart` - Retrieve all cart items.
 - `DELETE /api/cart/{cartItemId}` - Remove an item from the cart.
 
+### Product Reviews
+- `POST /api/product-review` - Add a new review for a product (Buyer only, one review per product).
+- `PUT /api/product-review` - Update an existing review (Buyer only, must be the review owner).
+- `DELETE /api/product-review/{id}` - Delete a review by its ID (Buyer only, must be the review owner).
+- `GET /api/product-review/{productId}` - Retrieve paginated reviews for a specific product.
+
 ### Password Management
 - `GET /api/password/send/{gmail}` - Send a password reset token.
 - `POST /api/password/change` - Change the password using the token.
