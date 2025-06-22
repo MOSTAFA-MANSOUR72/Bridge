@@ -1,6 +1,7 @@
 package com.market.bridge.entity.order;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.market.bridge.entity.enums.OrderStatus;
 import com.market.bridge.entity.users.Buyer;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -24,11 +25,11 @@ public class SingleOrder {
     private Long id;
 
     @Column(name = "total_price")
-    private Long totalPrice;
+    private Double totalPrice;
     @Column(name = "total_quantity")
     private Long totalQuantity;
-    @Column(name = "status")
-    private String status;
+
+    private OrderStatus status;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<OrderItem> orderItems;

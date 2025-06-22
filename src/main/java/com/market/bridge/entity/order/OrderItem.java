@@ -26,7 +26,7 @@ public class OrderItem {
     private Long quantity;
 
     @Column(name = "total_price")
-    private Long totalPrice;
+    private Double totalPrice;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
