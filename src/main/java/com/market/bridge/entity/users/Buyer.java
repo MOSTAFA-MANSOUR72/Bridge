@@ -8,10 +8,7 @@ import com.market.bridge.entity.cart.Cart;
 import com.market.bridge.entity.order.SingleOrder;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDate;
@@ -56,7 +53,7 @@ public class Buyer {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "address_id")
     @ToString.Exclude
-    @EqualsAndHashCode.Exlude
+    @EqualsAndHashCode.Exclude
     private Address address;
 
     @OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
