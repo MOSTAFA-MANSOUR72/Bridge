@@ -93,38 +93,6 @@ public class AppConfig {
              // Save the category to the database
              categoryRepo.save(category);
 
-             // Add products for the seller
-            Product product1 = Product.builder()
-                    .name("Laptop")
-                    .description("High-performance laptop")
-                    .price(1200.00)
-                    .quantity((10L))
-                    .categories(List.of(category))
-                    .seller(seller)
-                    .minOrder(2L)
-                    .images(List.of("C:\\Users\\dell\\Documents\\Downloads\\WorkSpace\\bridge\\Bridge\\src\\main\\resources\\images\\laptop.jpeg"))
-                    .build();
-            Product product2 = Product.builder()
-                    .name("Smartphone")
-                    .description("Latest model smartphone")
-                    .price(800.00)
-                    .quantity((20L))
-                    .minOrder(2L)
-                    .categories(List.of(category))
-                    .seller(seller)
-                    .images(List.of("C:\\Users\\dell\\Documents\\Downloads\\WorkSpace\\bridge\\Bridge\\src\\main\\resources\\images\\smart.jpeg"))
-                    .build();
-            Product product3 = Product.builder()
-                    .name("Tablet")
-                    .description("Portable tablet with great features")
-                    .price(500.00)
-                    .minOrder(2L)
-                    .quantity((15L))
-                    .categories(List.of(category))
-                    .seller(seller)
-                    .images(List.of("C:\\Users\\dell\\Documents\\Downloads\\WorkSpace\\bridge\\Bridge\\src\\main\\resources\\images\\tap.jpeg"))
-                    .build();
-            productRepo.saveAll(List.of(product1, product2, product3));
         };
 
     }
