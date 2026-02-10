@@ -54,27 +54,29 @@ public class Buyer {
 
     // uni directional
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    @JoinColumn(name = "address_id")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exlude
     private Address address;
 
     @OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonManagedReference
     private List<SingleOrder> orders;
 
     @OneToMany(mappedBy = "buyer", fetch = FetchType.LAZY)
-    @JsonManagedReference
     private List<ProductReview> productReviews;
 
     @OneToOne(mappedBy = "buyer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Cart cart;
 
-    // Uni directional relationship with Product
-    @ManyToMany
+
+    @ManyToMany // Uni directional relationship with Product
     @JoinTable(
             name = "wishlist",
             joinColumns = @JoinColumn(name = "buyer_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
+    @ToString.Exclude // lombok ignore to avoid lazy fetch problem
+    @EqualsAndHashCode.Exclude // lombok ignore to avoid lazy fetch problem
     private Set<Product> wishlist;
 
     @Column(name = "created_at")

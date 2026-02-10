@@ -24,15 +24,11 @@ public class ProductReview {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    @JsonBackReference
-    private Product product;
+    @Column(name = "product_id")
+    private Long productId;
 
-    @ManyToOne
-    @JoinColumn(name = "buyer_id")
-    @JsonBackReference
-    private Buyer buyer;
+    @Column(name = "buyer_id")
+    private Long buyerId;
 
     @Column(name = "review")
     private String review;

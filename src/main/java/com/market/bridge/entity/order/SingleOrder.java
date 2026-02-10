@@ -26,6 +26,7 @@ public class SingleOrder {
 
     @Column(name = "total_price")
     private Double totalPrice;
+
     @Column(name = "total_quantity")
     private Long totalQuantity;
 
@@ -36,7 +37,6 @@ public class SingleOrder {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @JsonBackReference
     private Buyer buyer;
 
     @Column(name = "payment_method")

@@ -66,7 +66,6 @@ public class Product {
     private List<OrderItem> orderItems;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonManagedReference
     private List<ProductReview> productReviews;
 
     @ElementCollection

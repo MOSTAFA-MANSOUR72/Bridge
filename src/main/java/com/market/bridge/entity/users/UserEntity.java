@@ -47,21 +47,4 @@ public class UserEntity implements UserDetails {
         return username;
     }
 
-
-//    // commons
-//    //**
-//    @Column(name = "Company_name")
-//    private String companyName;
-//
-//    @ManyToMany
-//    @JoinTable(
-//            name = "business_type",
-//            joinColumns = @JoinColumn(name = "user_id"),
-//            inverseJoinColumns = @JoinColumn(name = "category_id")
-//    )
-//    List<Category> businessTypes; // tags buyer browse , tags seller sells
-//    //
-//    //**
-
-
 }
