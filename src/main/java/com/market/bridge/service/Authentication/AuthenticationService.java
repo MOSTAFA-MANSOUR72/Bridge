@@ -10,4 +10,6 @@ public interface AuthenticationService {
     String buyerRegister(RegisterRequest request);
 
     String sellerRegister(RegisterRequest request);
+
+    String adminRegister(RegisterRequest request);
 }

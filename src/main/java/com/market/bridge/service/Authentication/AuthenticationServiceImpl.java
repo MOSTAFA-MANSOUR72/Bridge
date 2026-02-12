@@ -3,9 +3,11 @@ package com.market.bridge.service.Authentication;
 import com.market.bridge.dto.authentication.AuthResponse;
 import com.market.bridge.dto.authentication.RegisterRequest;
 import com.market.bridge.entity.enums.SystemRoles;
+import com.market.bridge.entity.users.Admin;
 import com.market.bridge.entity.users.Buyer;
 import com.market.bridge.entity.users.Seller;
 import com.market.bridge.entity.users.UserEntity;
+import com.market.bridge.repository.AdminRepo;
 import com.market.bridge.repository.BuyerRepo;
 import com.market.bridge.repository.SellerRepo;
 import com.market.bridge.security.jwt.JwtService;
@@ -28,16 +30,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final BuyerRepo buyerRepo;
     private final SellerRepo sellerRepo;
+    private final AdminRepo adminRepo;
 
     @Override
     public String buyerRegister(RegisterRequest request) {
-        // Check if the username already exists
-        if (buyerRepo.existsByUsername(request.getUsername())) {
-            throw new IllegalArgumentException("Username already exists");
-        }
-        // Check if the email already exists
-        if (buyerRepo.existsByEmail(request.getEmail())) {
-            throw new IllegalArgumentException("Email already exists");
+        // Check if the username and email already exists
+        if (doesUserOrEmailExist(request.getUsername(), request.getEmail())) {
+            throw new IllegalArgumentException("Username or Email already exists");
         }
 
         Buyer buyer = Buyer.builder()
@@ -58,13 +57,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public String sellerRegister(RegisterRequest request) {
-        // Check if the username already exists
-        if (sellerRepo.existsByUsername(request.getUsername())) {
-            throw new IllegalArgumentException("Username already exists");
-        }
-        // Check if the email already exists
-        if (sellerRepo.existsByEmail(request.getEmail())) {
-            throw new IllegalArgumentException("Email already exists");
+        // Check if the username and email already exists
+        if (doesUserOrEmailExist(request.getUsername(), request.getEmail())) {
+            throw new IllegalArgumentException("Username or Email already exists");
         }
 
         // Create a new seller object
@@ -86,6 +81,24 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
+    public String adminRegister(RegisterRequest request) {
+        // Check if the username and email already exists
+        if (doesUserOrEmailExist(request.getUsername(), request.getEmail())) {
+            throw new IllegalArgumentException("Username or Email already exists");
+        }
+
+        Admin admin = Admin.builder()
+                .username(request.getUsername())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .email(request.getEmail())
+                .phoneNumber(request.getPhoneNumber())
+                .roles(SystemRoles.ADMIN.name())
+                .build();
+        adminRepo.save(admin);
+        return jwtService.generateToken(new UserEntity(admin));
+    }
+
+    @Override
     public AuthResponse authenticate(AuthenticationRequest request){
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -101,4 +114,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         );
     }
 
+
+    boolean doesUserOrEmailExist(String username, String email) {
+        return buyerRepo.existsByUsername(username) || buyerRepo.existsByEmail(email) ||
+                sellerRepo.existsByUsername(username) || sellerRepo.existsByEmail(email) ||
+                adminRepo.existsByUsername(username) || adminRepo.existsByEmail(email);
+    }
 }

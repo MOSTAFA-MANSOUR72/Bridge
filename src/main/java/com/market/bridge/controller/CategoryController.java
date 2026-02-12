@@ -6,16 +6,18 @@ import com.market.bridge.service.Category.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/categories")
 @RequiredArgsConstructor
+@PreAuthorize("hasAnyRole('ADMIN', 'SELLER')")
 public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping
-    public ResponseEntity<?> getPathCategories() {
+    public ResponseEntity<?> getParentCategories() {
         try {
             return ResponseEntity.ok(categoryService.getParentCategories());
         } catch (Exception e) {

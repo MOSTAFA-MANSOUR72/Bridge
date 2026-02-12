@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,6 +29,7 @@ public class ProductController {
     private final ProductService productService;
     private final ProductMapper productMapper;
 
+    @PreAuthorize("hasRole('SELLER')")
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<?> createProduct(@ModelAttribute ProductAddRequest productRequest) {
         try {
@@ -43,6 +45,7 @@ public class ProductController {
         }
     }
 
+    @PreAuthorize("hasRole('SELLER')")
     @PutMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<?> updateProduct(@ModelAttribute ProductUpdateRequest productRequest) {
         try {
@@ -102,6 +105,7 @@ public class ProductController {
         }
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'SELLER')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteProduct(@PathVariable Long id) {
         try{

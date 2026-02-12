@@ -18,13 +18,25 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegisterRequest request) {
-        return request.getRoles().equals("BUYER")?
-         ResponseEntity.ok(
-                authenticationService.buyerRegister(request)
-        ):
-        ResponseEntity.ok(
-                authenticationService.sellerRegister(request)
-        );
+        try {
+            String result;
+            switch (request.getRoles().toUpperCase()) {
+                case "BUYER":
+                    result = authenticationService.buyerRegister(request);
+                    break;
+                case "SELLER":
+                    result = authenticationService.sellerRegister(request);
+                    break;
+                case "ADMIN":
+                    result = authenticationService.adminRegister(request);
+                    break;
+                default:
+                    return ResponseEntity.badRequest().body("Invalid role: " + request.getRoles());
+            }
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            return ResponseEntity.status(400).body("Error during registration: " + e.getMessage());
+        }
     }
 
     @PostMapping("/login")

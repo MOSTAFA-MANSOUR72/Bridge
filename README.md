@@ -101,7 +101,7 @@ The **Bridge Application** is a Spring Boot-based e-commerce platform that facil
 
 5. **Access the Application**:
     - API Base URL: `http://localhost:8080`
-    - Swagger UI: `http://localhost:8080/swagger-ui/`
+    - Swagger UI: `http://localhost:8080/swagger-ui/index.html`
 
 ---
 

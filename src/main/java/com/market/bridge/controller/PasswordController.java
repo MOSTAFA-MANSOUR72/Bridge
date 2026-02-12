@@ -18,7 +18,7 @@ public class PasswordController {
 
     private static final Logger logger = LoggerFactory.getLogger(PasswordController.class);
 
-    @GetMapping("/send/{gmail}")
+    @GetMapping("/send/{Gmail}")
     public ResponseEntity<String> send(@PathVariable String gmail) {
         try {
             passwordService.sendAuthToken(gmail);
