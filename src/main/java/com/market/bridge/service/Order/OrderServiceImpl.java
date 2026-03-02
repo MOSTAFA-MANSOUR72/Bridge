@@ -8,6 +8,8 @@ import com.market.bridge.entity.enums.OrderStatus;
 import com.market.bridge.entity.order.OrderItem;
 import com.market.bridge.entity.order.SingleOrder;
 import com.market.bridge.entity.users.Buyer;
+import com.market.bridge.exception.ResourceNotFoundException;
+import com.market.bridge.exception.ValidationException;
 import com.market.bridge.repository.BuyerRepo;
 import com.market.bridge.repository.CartItemRepo;
 import com.market.bridge.repository.OrderItemRepo;
@@ -21,6 +23,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
@@ -41,16 +44,17 @@ public class OrderServiceImpl implements OrderService {
     private final RestTemplate restTemplate;
 
     @Override
+    @Transactional
     public OrderResponse createOrder(OrderAddRequest orderAddRequest) {
         try {
             // Get current buyer
             Buyer buyer = buyerRepo.findById(util.userId)
-                    .orElseThrow(() -> new RuntimeException("Buyer not found"));
+                    .orElseThrow(() -> new ResourceNotFoundException("Buyer not found"));
 
             // Get buyer's cart
             Cart cart = buyer.getCart();
             if (cart == null || cart.getCartItems() == null || cart.getCartItems().isEmpty()) {
-                throw new RuntimeException("Cart is empty");
+                throw new ValidationException("Cart is empty");
             }
 
             List<CartItem> cartItems = cart.getCartItems();
@@ -63,12 +67,12 @@ public class OrderServiceImpl implements OrderService {
             // Process payment if not cash on delivery
             if (!orderAddRequest.getCashOnDelivery()) {
                 if (orderAddRequest.getAccountNumber() == null || orderAddRequest.getAccountNumber().isEmpty()) {
-                    throw new RuntimeException("Payment code is required for online payment");
+                    throw new ValidationException("Payment code is required for online payment");
                 }
 
                 boolean paymentSuccess = processPayment(orderAddRequest.getAccountNumber(), totalAmount);
                 if (!paymentSuccess) {
-                    throw new RuntimeException("Payment failed. Please check your payment details and try again.");
+                    throw new ValidationException("Payment failed. Please check your payment details and try again.");
                 }
             }
 
@@ -127,6 +131,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public String cancelOrder(Long orderId) {
         try {
             SingleOrder order = orderRepo.findById(orderId)
@@ -155,11 +160,11 @@ public class OrderServiceImpl implements OrderService {
     public OrderResponse getOrderById(Long orderId) {
         try {
             SingleOrder order = orderRepo.findById(orderId)
-                    .orElseThrow(() -> new RuntimeException("Order not found"));
+                    .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
 
             // Check if order belongs to current user
             if (!order.getBuyer().getId().equals(util.userId)) {
-                throw new RuntimeException("You can only view your own orders");
+                throw new ValidationException("You can only view your own orders");
             }
 
             return OrderResponse.builder()
@@ -181,7 +186,7 @@ public class OrderServiceImpl implements OrderService {
     public Page<OrderResponse> getAllOrders(Pageable pageable) {
         try {
             Buyer buyer = buyerRepo.findById(util.userId)
-                    .orElseThrow(() -> new RuntimeException("Buyer not found"));
+                    .orElseThrow(() -> new ResourceNotFoundException("Buyer not found"));
 
             Page<SingleOrder> orders = orderRepo.findByBuyerOrderByCreatedAtDesc(buyer, pageable);
 
@@ -204,18 +209,18 @@ public class OrderServiceImpl implements OrderService {
     public OrderResponse updateOrderStatus(Long orderId, String status) {
         try {
             SingleOrder order = orderRepo.findById(orderId)
-                    .orElseThrow(() -> new RuntimeException("Order not found"));
+                    .orElseThrow(() -> new ValidationException("Order not found"));
 
             // Check if order belongs to current user
             if (!order.getBuyer().getId().equals(util.userId)) {
-                throw new RuntimeException("You can only update your own orders");
+                throw new ValidationException("You can only update your own orders");
             }
 
             OrderStatus newStatus;
             try {
                 newStatus = OrderStatus.valueOf(status.toUpperCase());
             } catch (IllegalArgumentException e) {
-                throw new RuntimeException("Invalid order status: " + status);
+                throw new ValidationException("Invalid order status: " + status);
             }
 
             order.setStatus(newStatus);

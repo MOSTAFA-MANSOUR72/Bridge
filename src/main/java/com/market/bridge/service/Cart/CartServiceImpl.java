@@ -5,6 +5,7 @@ import com.market.bridge.dto.cartItem.CartItemUpdateRequest;
 import com.market.bridge.entity.Product;
 import com.market.bridge.entity.cart.Cart;
 import com.market.bridge.entity.cart.CartItem;
+import com.market.bridge.exception.ResourceNotFoundException;
 import com.market.bridge.mapper.CartItemMapper;
 import com.market.bridge.repository.BuyerRepo;
 import com.market.bridge.repository.CartItemRepo;
@@ -59,7 +60,7 @@ public class CartServiceImpl implements CartService{
     @Override
     public void deleteCartItem(Long cartItemId) {
         CartItem cartItem = cartItemRepo.findById(cartItemId)
-                .orElseThrow(() -> new IllegalArgumentException("Cart item not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Cart item not found"));
         Product product = cartItem.getProduct();
         product.setQuantity(product.getQuantity() + cartItem.getQuantity());
 
@@ -70,10 +71,7 @@ public class CartServiceImpl implements CartService{
     @Override
     public Cart getOrCreateCart() {
         Optional<Cart> cart = cartRepo.findByBuyer_Id(util.userId);
-        if(cart.isPresent()) {
-            return cart.get();
-        }
-        return createNewCart();
+        return cart.orElseGet(this::createNewCart);
     }
 
     @Override
@@ -82,7 +80,7 @@ public class CartServiceImpl implements CartService{
                 .cartItems(new ArrayList<>())
                 .buyer(
                         buyerRepo.findById(util.userId)
-                                .orElseThrow(() -> new UsernameNotFoundException("User not found"))
+                                .orElseThrow(() -> new ResourceNotFoundException("User not found"))
                 )
                 .build();
         return cartRepo.save(cart);

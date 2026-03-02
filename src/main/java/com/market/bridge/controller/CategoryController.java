@@ -18,24 +18,12 @@ public class CategoryController {
 
     @GetMapping
     public ResponseEntity<?> getParentCategories() {
-        try {
-            return ResponseEntity.ok(categoryService.getParentCategories());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(e.getMessage());
-        }
-
+        return ResponseEntity.ok(categoryService.getParentCategories());
     }
 
     @GetMapping("/child/{parentId}")
     public ResponseEntity<?> getChildCategories(@PathVariable Long parentId) {
-        try {
-            return ResponseEntity.ok(categoryService.getChildCategories(parentId));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(e.getMessage());
-        }
-
+        return ResponseEntity.ok(categoryService.getChildCategories(parentId));
     }
 
     @GetMapping("/{id}")

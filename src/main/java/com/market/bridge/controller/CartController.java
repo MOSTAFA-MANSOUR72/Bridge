@@ -32,26 +32,15 @@ public class CartController {
 
     @PutMapping
     public ResponseEntity<?> updateCartItem(@RequestBody CartItemUpdateRequest request) {
-        System.out.println(request);
-        try {
-            return ResponseEntity.ok(
-                    cartService.updateCartItem(request)
-            );
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(e.getMessage());
-        }
+        return ResponseEntity.ok(
+                cartService.updateCartItem(request)
+        );
     }
 
     @DeleteMapping("/{cartItemId}")
     public ResponseEntity<?> deleteCartItem(@PathVariable Long cartItemId) {
-        try {
-            cartService.deleteCartItem(cartItemId);
-            return ResponseEntity.ok("Cart item deleted successfully");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(e.getMessage());
-        }
+        cartService.deleteCartItem(cartItemId);
+        return ResponseEntity.ok("Cart item deleted successfully");
     }
 
 

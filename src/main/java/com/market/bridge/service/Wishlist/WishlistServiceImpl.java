@@ -3,6 +3,7 @@ package com.market.bridge.service.Wishlist;
 import com.market.bridge.dto.product.ProductResponse;
 import com.market.bridge.entity.Product;
 import com.market.bridge.entity.users.Buyer;
+import com.market.bridge.exception.ResourceNotFoundException;
 import com.market.bridge.mapper.ProductMapper;
 import com.market.bridge.repository.BuyerRepo;
 import com.market.bridge.repository.ProductRepo;
@@ -26,7 +27,7 @@ public class WishlistServiceImpl implements WishlistService{
                 .orElseThrow(() -> new UsernameNotFoundException("Buyer not found"));
 
         Product product = productRepo.findById(productId)
-                .orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + productId));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + productId));
 
         buyer.addProductToWishlist(product);
         buyerRepo.save(buyer);
@@ -40,7 +41,7 @@ public class WishlistServiceImpl implements WishlistService{
                 .orElseThrow(() -> new UsernameNotFoundException("Buyer not found"));
 
         Product product = productRepo.findById(productId)
-                .orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + productId));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + productId));
 
         buyer.getWishlist().remove(product);
         buyerRepo.save(buyer);

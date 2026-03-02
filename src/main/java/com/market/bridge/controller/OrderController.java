@@ -23,61 +23,37 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity<?> createOrder(@RequestBody OrderAddRequest orderAddRequest) {
-        try {
-            OrderResponse orderResponse = orderService.createOrder(orderAddRequest);
-            return ResponseEntity.status(HttpStatus.CREATED).body(orderResponse);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Failed to create order: " + e.getMessage());
-        }
+        OrderResponse orderResponse = orderService.createOrder(orderAddRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(orderResponse);
     }
 
     @GetMapping("/{orderId}")
     public ResponseEntity<?> getOrderById(@PathVariable Long orderId) {
-        try {
-            OrderResponse orderResponse = orderService.getOrderById(orderId);
-            return ResponseEntity.ok(orderResponse);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Order not found: " + e.getMessage());
-        }
+        OrderResponse orderResponse = orderService.getOrderById(orderId);
+        return ResponseEntity.ok(orderResponse);
     }
 
     @GetMapping
     public ResponseEntity<?> getAllOrders(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
-        try {
-            Pageable pageable = PageRequest.of(page, size);
-            Page<OrderResponse> orders = orderService.getAllOrders(pageable);
-            return ResponseEntity.ok(orders);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Failed to get orders: " + e.getMessage());
-        }
+        Pageable pageable = PageRequest.of(page, size);
+        Page<OrderResponse> orders = orderService.getAllOrders(pageable);
+        return ResponseEntity.ok(orders);
     }
 
     @PutMapping("/{orderId}/cancel")
     public ResponseEntity<?> cancelOrder(@PathVariable Long orderId) {
-        try {
-            String result = orderService.cancelOrder(orderId);
-            return ResponseEntity.ok(result);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Failed to cancel order: " + e.getMessage());
-        }
+        String result = orderService.cancelOrder(orderId);
+        return ResponseEntity.ok(result);
     }
 
     @PutMapping("/{orderId}/status")
     public ResponseEntity<?> updateOrderStatus(
             @PathVariable Long orderId,
             @RequestParam String status) {
-        try {
-            OrderResponse orderResponse = orderService.updateOrderStatus(orderId, status);
-            return ResponseEntity.ok(orderResponse);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Failed to update order status: " + e.getMessage());
+
+        OrderResponse orderResponse = orderService.updateOrderStatus(orderId, status);
+        return ResponseEntity.ok(orderResponse);
         }
-    }
 } 

@@ -4,6 +4,7 @@ import com.market.bridge.dto.product.ProductResponse;
 import com.market.bridge.dto.product.ProductUpdateRequest;
 import com.market.bridge.entity.Product;
 import com.market.bridge.entity.users.Seller;
+import com.market.bridge.exception.ResourceNotFoundException;
 import com.market.bridge.mapper.ProductMapper;
 import com.market.bridge.repository.ProductRepo;
 import com.market.bridge.repository.SellerRepo;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -23,9 +25,10 @@ public class ProductServiceImpl implements ProductService{
     private final ProductMapper productMapper;
 
     @Override
+    @Transactional
     public String addProduct(Product product) {
         Seller seller = sellerRepo.findByUsername(util.username)
-                .orElseThrow(() -> new RuntimeException("Seller not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Seller not found"));
 
         product.setBrandName(seller.getCompanyName());
         seller.addProduct(product);
@@ -39,7 +42,7 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public void updateProduct(ProductUpdateRequest product, List<String> imagePaths) {
         Product existingProduct = productRepo.findById(product.getId())
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
         productMapper.toProduct(existingProduct, product);
         existingProduct.setImages(imagePaths);
         productRepo.save(existingProduct);
@@ -48,14 +51,14 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public void deleteProductById(Long id) {
         Product product = productRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
         productRepo.delete(product);
     }
 
     @Override
     public ProductResponse getProductById(Long id) {
         Product product = productRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
         return productMapper.toProductResponse(product);
     }
 

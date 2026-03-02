@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,18 +32,13 @@ public class ProductController {
 
     @PreAuthorize("hasRole('SELLER')")
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<?> createProduct(@ModelAttribute ProductAddRequest productRequest) {
-        try {
-            List<MultipartFile> images = productRequest.getImages();
-            List<String> imagePaths = saveImages(images);
-            Product product = productMapper.toProduct(productRequest);
-            product.setImages(imagePaths);
-            return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(productService.addProduct(product));
-        }catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(e.getMessage());
-        }
+    public ResponseEntity<?> createProduct(@ModelAttribute ProductAddRequest productRequest) throws IOException {
+        List<MultipartFile> images = productRequest.getImages();
+        List<String> imagePaths = saveImages(images);
+        Product product = productMapper.toProduct(productRequest);
+        product.setImages(imagePaths);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(productService.addProduct(product));
     }
 
     @PreAuthorize("hasRole('SELLER')")
@@ -60,18 +56,15 @@ public class ProductController {
                     .body(e.getMessage());
         }
     }
-    public List<String> saveImages(List<MultipartFile> images) {
+    public List<String> saveImages(List<MultipartFile> images) throws IOException {
         List<String> imagePaths = new ArrayList<>();
         for(MultipartFile image : images) {
             String fileName = image.getOriginalFilename();
             File file = new File(uploadDir + fileName);
-            try {
-                // Save the file in the images directory
-                image.transferTo(file);
-                imagePaths.add(file.getAbsolutePath());
-            } catch (Exception e) {
-                throw new RuntimeException("Error uploading file: " + fileName + " " + e.getMessage());
-            }
+
+            // Save the file in the images directory
+            image.transferTo(file);
+            imagePaths.add(file.getAbsolutePath());
         }
         return imagePaths;
     }
@@ -108,14 +101,9 @@ public class ProductController {
     @PreAuthorize("hasAnyRole('ADMIN', 'SELLER')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteProduct(@PathVariable Long id) {
-        try{
-            productService.deleteProductById(id);
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body("Product deleted successfully");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(e.getMessage());
-        }
+        productService.deleteProductById(id);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body("Product deleted successfully");
     }
 
 

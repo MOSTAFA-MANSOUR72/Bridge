@@ -3,6 +3,7 @@ package com.market.bridge.service.Category;
 import com.market.bridge.dto.category.CategoryAddRequest;
 import com.market.bridge.dto.category.CategoryDTO;
 import com.market.bridge.entity.Category;
+import com.market.bridge.exception.ResourceNotFoundException;
 import com.market.bridge.repository.CategoryRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,7 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryDTO getCategoryById(Long id) {
         return categoryRepo.findById(id)
                 .map(CategoryDTO::new)
-                .orElseThrow(() -> new RuntimeException("Category not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
     }
 
     @Override
@@ -49,7 +50,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryDTO updateCategory(CategoryDTO category) {
         Category existingCategory = categoryRepo.findById(category.getId())
-                .orElseThrow(() -> new RuntimeException("Category not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
         existingCategory.setParentCategoryId(category.getParentCategoryId());
         existingCategory.setName(category.getName());
         categoryRepo.save(existingCategory);
@@ -59,7 +60,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public String deleteCategory(Long id) {
         Category category = categoryRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Category not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
         categoryRepo.delete(category);
         return "Category deleted successfully";
     }

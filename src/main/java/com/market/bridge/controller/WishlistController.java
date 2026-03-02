@@ -15,49 +15,29 @@ public class WishlistController {
 
     @PostMapping("/{productId}")
     public ResponseEntity<?> addToWishlist(@PathVariable long productId) {
-        try {
-            return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(wishlistService.addToWishlist(productId));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(e.getMessage());
-        }
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(wishlistService.addToWishlist(productId));
     }
 
     @DeleteMapping("/{productId}")
     public ResponseEntity<?> removeFromWishlist(@PathVariable long productId) {
-        try {
-            wishlistService.removeFromWishlist(productId);
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body("Product removed from wishlist successfully.");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(e.getMessage());
-        }
+        wishlistService.removeFromWishlist(productId);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body("Product removed from wishlist successfully.");
     }
 
     @DeleteMapping
     public ResponseEntity<?> clearWishlist() {
-        try {
-            wishlistService.clearWishlist();
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body("Wishlist cleared successfully.");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(e.getMessage());
-        }
+        wishlistService.clearWishlist();
+        return ResponseEntity.status(HttpStatus.OK)
+                .body("Wishlist cleared successfully.");
     }
 
     @GetMapping
     public ResponseEntity<?> getWishlist(
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "50") int pageSize) {
-        try {
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(wishlistService.getWishlist(Pageable.ofSize(pageSize).withPage(pageNumber)));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(e.getMessage());
-        }
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(wishlistService.getWishlist(Pageable.ofSize(pageSize).withPage(pageNumber)));
     }
 }

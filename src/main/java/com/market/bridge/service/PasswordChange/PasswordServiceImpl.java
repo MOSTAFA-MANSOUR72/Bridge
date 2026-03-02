@@ -3,6 +3,7 @@ package com.market.bridge.service.PasswordChange;
 import com.market.bridge.entity.users.Admin;
 import com.market.bridge.entity.users.Buyer;
 import com.market.bridge.entity.users.Seller;
+import com.market.bridge.exception.ValidationException;
 import com.market.bridge.repository.*;
 import com.market.bridge.security.jwt.JwtService;
 import com.market.bridge.service.MailService.MailService;
@@ -24,6 +25,7 @@ public class PasswordServiceImpl implements PasswordService {
     public final MailService mailService;
     public final JwtService jwtService;
     public final PasswordEncoder passwordEncoder;
+
     @Override
     public void sendAuthToken(String gmail) {
         // Implementation to send authentication token to the provided email
@@ -52,14 +54,14 @@ public class PasswordServiceImpl implements PasswordService {
     public void changePassword(String token, String newPassword) {
         // Implementation to change the password using the provided token and new password
         if(validateAuthToken(token)) {
-            throw new IllegalArgumentException("Invalid token");
+            throw new ValidationException("Invalid token");
         }
 
         if(newPassword == null || newPassword.isEmpty()) {
-            throw new IllegalArgumentException("New password cannot be empty");
+            throw new ValidationException("New password cannot be empty");
         }
         if(newPassword.length() < 8) {
-            throw new IllegalArgumentException("New password must be at least 8 characters long");
+            throw new ValidationException("New password must be at least 8 characters long");
         }
         String pass = passwordEncoder.encode(newPassword);
         String username = jwtService.extractUsername(token);
@@ -82,6 +84,6 @@ public class PasswordServiceImpl implements PasswordService {
             buyerRepo.save(buyer);
             return;
         }
-        throw new IllegalArgumentException("User not found");
+        throw new UsernameNotFoundException("User not found");
     }
 }

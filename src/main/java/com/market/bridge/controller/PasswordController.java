@@ -20,24 +20,13 @@ public class PasswordController {
 
     @GetMapping("/send/{Gmail}")
     public ResponseEntity<String> send(@PathVariable String gmail) {
-        try {
-            passwordService.sendAuthToken(gmail);
-            return ResponseEntity.ok("Email sent successfully");
-        } catch (Exception e) {
-            logger.error("Error sending email: {}", e.getMessage());
-            return ResponseEntity.status(500).body("Error sending email: " + gmail + " " + e.getMessage());
-        }
+        passwordService.sendAuthToken(gmail);
+        return ResponseEntity.ok("Email sent successfully");
     }
 
     @PostMapping("/change")
     public ResponseEntity<String> change(@RequestBody ChangeRequest request) {
-        try {
-            passwordService.changePassword(request.getToken(), request.getPassword());
-            return ResponseEntity.ok("Password changed successfully");
-        } catch (Exception e) {
-            logger.error("Error changing password: {}", e.getMessage());
-            return ResponseEntity.status(500).body("Error changing password: " + e.getMessage());
-        }
+        passwordService.changePassword(request.getToken(), request.getPassword());
+        return ResponseEntity.ok("Password changed successfully");
     }
-
 }
