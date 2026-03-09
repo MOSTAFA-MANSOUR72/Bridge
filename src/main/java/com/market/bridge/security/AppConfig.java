@@ -28,7 +28,6 @@ public class AppConfig {
     private final AdminRepo adminRepo;
     private final SellerRepo sellerRepo;
     private final CategoryRepo categoryRepo;
-    private final ProductRepo  productRepo;
 
     @Bean
     public RestTemplate restTemplate() {
